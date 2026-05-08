@@ -1,0 +1,3 @@
+spring:
+  consumer:
+    kafka-group-id: coordinate-service-group1

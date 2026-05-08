@@ -1,0 +1,26 @@
+spring:
+  kafka:
+      bootstrap-servers: 192.168.0.186:9092
+      consumer:
+        # 當沒有 offset 時，從最舊的訊息開始讀取
+        auto-offset-reset: earliest
+        # Key 與 Value 的反序列化工具
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        properties:
+          # 必加：信任所有套件的路徑，否則會噴類別找不到的錯誤
+          spring.json.trusted.packages: "*"
+      producer:
+        # Key 與 Value 的序列化工具
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  kafka-topics:
+      event-init-order-new: 'ind.poc.event.initCreateOrder'
+      event-init-order-payment-create: 'ind.poc.event.initCreatePayment'
+      event-init-order-complete: 'ind.poc.event.CompleteInitOrder'
+      event-init-order-payment-create-fail: 'ind.poc.event.initCreatePaymentFail'
+      event-init-order-fail: 'ind.poc.event.NewOrderFail'
+      event-complete-payment-new: 'ind.poc.event.ClosePayment'
+      event-complete-payment-order: 'ind.poc.event.CloseOrder'
+      event-complete-payment-storage-commit: 'ind.poc.event.CommitStorage'
+      event-complete-payment-done: 'ind.poc.event.CompleteOrderWithPayment'

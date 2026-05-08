@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: bff-service
+  config:
+    import:
+      - nacos:bff-service.yaml
+      - nacos:kafka.yaml
+      - nacos:redis.yaml
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.186:8848
+      config:
+        server-addr: 192.168.0.186:8848
+        file-extension: yaml
+        group: DEFAULT_GROUP
