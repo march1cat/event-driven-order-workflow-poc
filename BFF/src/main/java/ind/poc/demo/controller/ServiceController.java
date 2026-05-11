@@ -38,7 +38,11 @@ public class ServiceController {
         result.onCompletion(() -> {
             createPOResponsePool.remove(tmpOrderId);
         });
-        final ResponseCreatePO responseCreatePO = composeService.onNewPurchaseOrder(tmpOrderId, purchaseOrder.getUserId(), purchaseOrder.getPartNo(), purchaseOrder.getQuantity());
+        boolean isSimulateDLQ = purchaseOrder.getUserId().equals("DLQ");
+        final ResponseCreatePO responseCreatePO = !isSimulateDLQ ?
+                composeService.onNewPurchaseOrder(tmpOrderId, purchaseOrder.getUserId(), purchaseOrder.getPartNo(), purchaseOrder.getQuantity()) :
+                composeService.onNewPurchaseOrderForDLQ(tmpOrderId, purchaseOrder.getUserId(), purchaseOrder.getPartNo(), purchaseOrder.getQuantity())
+                ;
         if(!responseCreatePO.isSuccess()){
             result.setErrorResult(responseCreatePO.getErrorMessage());
         } else {

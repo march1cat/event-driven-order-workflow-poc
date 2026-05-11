@@ -34,6 +34,7 @@ The system uses asynchronous event-driven communication to maintain eventual con
 ### Services
 | Service | Responsibility |
 | :--- | :--- |
+| **bff-service** | Client-facing API layer, asynchronous request handling, response aggregation |
 | **order-service** | Order creation and status management |
 | **payment-service** | Payment workflow simulation |
 | **storage-service** | Inventory freeze / commit / rollback |
@@ -42,6 +43,19 @@ The system uses asynchronous event-driven communication to maintain eventual con
 | **redis** | Distributed lock / idempotency |
 | **kafka** | Event bus |
 | **mariadb** | Persistent storage |
+
+
+```mermaid 
+flowchart LR
+    Client --> BFF
+    BFF --> Inventory
+    BFF --> Order
+    Inventory --> Kafka
+    Order --> Kafka
+    Payment --> Kafka
+    Kafka --> Coordinator
+    Coordinator --> Redis
+```
 
 ### Workflow: Order Creation Flow
 `Client` -> `order-service` -> `freeze inventory event` -> `storage-service` -> `inventory frozen` -> `create payment event` -> `payment-service` -> `payment completed` -> `commit inventory` -> `complete order`
@@ -92,7 +106,6 @@ Kafka events are published after database commit using transaction synchronizati
 *This project is currently a POC and is **NOT** production-ready.*
 * Workflow state stored in memory
 * No durable workflow persistence / No distributed tracing
-* No DLQ (Dead Letter Queue) / retry strategy
 * No reconciliation job / event replay mechanism
 * No observability dashboard / chaos testing
 * No outbox pattern implementation
@@ -101,7 +114,6 @@ Kafka events are published after database commit using transaction synchronizati
 
 ## Future Improvements
 * OpenTelemetry tracing & Prometheus + Grafana metrics
-* Kafka retry / DLQ & Outbox pattern
 * Workflow persistence & Event replay support
 * Reconciliation jobs & Chaos engineering tests
 * Spring Cloud Gateway integration
@@ -128,6 +140,7 @@ Kafka events are published after database commit using transaction synchronizati
 ## Repository Structure
 ```text
 .
+├── bff-service
 ├── order-service
 ├── payment-service
 ├── storage-service

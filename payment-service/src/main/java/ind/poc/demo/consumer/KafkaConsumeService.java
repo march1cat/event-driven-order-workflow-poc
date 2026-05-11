@@ -27,6 +27,9 @@ public class KafkaConsumeService {
             if(data.getUserId().equals("Fail")) {
                 throw new Exception("Simulate Error Happening!!");
             }
+            if(data.getUserId().equals("DLQ")) {
+                throw new Exception("Simulate Error Happening for DLQ!!");
+            }
             String paymentId = paymentsService.createNewPayment(data.getOrderId(), data.getUserId());
             data.setPaymentId(paymentId);
             kafkaProducerService.sendToCompleteAddPayment(data);

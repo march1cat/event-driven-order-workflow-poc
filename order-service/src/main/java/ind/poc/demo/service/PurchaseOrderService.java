@@ -2,6 +2,7 @@ package ind.poc.demo.service;
 
 import ind.poc.demo.data.FlowPurchaseData;
 import ind.poc.demo.data.PurchaseOrder;
+import ind.poc.demo.error.OrderRecordNotFoundException;
 import ind.poc.demo.repository.PurchaseOrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -67,9 +68,11 @@ public class PurchaseOrderService {
     }
 
     @Transactional
-    public boolean cancelOrder(String orderId){
+    public void cancelOrder(String orderId){
         int affectedCount = purchaseOrderRepository.cancelOrder(orderId);
-        return affectedCount > 0;
+        if(affectedCount <= 0) {
+            throw new OrderRecordNotFoundException(orderId);
+        }
     }
 
 }

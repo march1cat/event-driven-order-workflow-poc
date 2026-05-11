@@ -18,4 +18,12 @@ public class StorageController {
     public ResponseFreezeQuantity freezeStorage(@RequestBody RequestFreezeStorage requestFreezeStorage) {
         return idempotenceService.freezeQuantity(requestFreezeStorage);
     }
+
+    @PostMapping("/fake-freeze")
+    public ResponseFreezeQuantity flowSimulateRollbackFail(@RequestBody RequestFreezeStorage requestFreezeStorage) {
+        //Fake freeze storage, while the failing rollback is triggered, the storage unfreezed will be failed.
+        return ResponseFreezeQuantity.builder()
+                .isSuccess(true)
+                .build();
+    }
 }

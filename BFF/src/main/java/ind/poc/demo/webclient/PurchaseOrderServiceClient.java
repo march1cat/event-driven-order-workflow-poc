@@ -9,4 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface PurchaseOrderServiceClient {
     @PostMapping("/api/purchase/new")
     ResponseCreatePurchaseOrder onNewOrder(@RequestBody RequestCreatePO request);
+
+    @PostMapping("/api/purchase/new-for-dlq")
+    ResponseCreatePurchaseOrder onNewOrderDLQ(@RequestBody RequestCreatePO request);
 }

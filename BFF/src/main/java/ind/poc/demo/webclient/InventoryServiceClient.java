@@ -10,4 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface InventoryServiceClient {
     @PostMapping("/api/storage/freeze")
     ResponseFreezeQuantity freezeStorage(@RequestBody RequestFreezeStorage request);
+
+
+
+    @PostMapping("/api/storage/fake-freeze")
+    ResponseFreezeQuantity fakefreezeStorage(@RequestBody RequestFreezeStorage request);
 }
