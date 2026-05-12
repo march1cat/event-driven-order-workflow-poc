@@ -6,6 +6,7 @@ spring:
       - nacos:order-service.yaml
       - nacos:kafka.yaml
       - nacos:redis.yaml
+      - nacos:logging.yml
   cloud:
     nacos:
       discovery:

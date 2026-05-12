@@ -5,6 +5,7 @@ spring:
     import:
       - nacos:coordinate-service.yaml
       - nacos:kafka.yaml
+      - nacos:logging.yml
   cloud:
     nacos:
       discovery:

@@ -12,7 +12,7 @@ public class IdempotenceService {
     private final RedisService redisService;
     private final StorageService databaseAccessService;
     public Object checkFreezeStorage(String orderId){
-        return redisService.get("freeze:" + orderId);
+        return redisService.get("freeze:storage:" + orderId);
     }
 
     public boolean lockFreezeStorage(String orderId){
@@ -32,7 +32,7 @@ public class IdempotenceService {
                 try {
                     boolean result = databaseAccessService.freezeQuantity(requestFreezeStorage.getOrderId(), requestFreezeStorage.getPartNo(), requestFreezeStorage.getQuantity());
                     resData = ResponseFreezeQuantity.builder().isSuccess(result).build();
-                    redisService.set("freeze:storage:" + requestFreezeStorage.getOrderId(), "true", 5000L);
+                    redisService.set("freeze:storage:" + requestFreezeStorage.getOrderId(), resData, 5000L);
                 } catch (Exception e) {
                     resData = ResponseFreezeQuantity.builder().isSuccess(false).errorMessage(e.getMessage()).build();
                 } finally {
